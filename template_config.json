@@ -1,0 +1,31 @@
+{
+  "entreprise": {
+    "nom": "MONSIEUR/MADAME [VOTRE NOM]",
+    "adresse": "[Votre adresse complète]",
+    "siret": "[Votre numéro SIRET]",
+    "tva_intra": "[Votre TVA intracommunautaire]",
+    "code_ape": "[Votre code APE] -- [Description activité]",
+    "forme_juridique": "[Votre forme juridique]",
+    "iban": "[Votre IBAN]",
+    "bic": "[Votre BIC]"
+  },
+  "client": {
+    "nom": "Amazon Media EU S.à r.l.",
+    "adresse": "5 rue Plaetis\nL-2338 Luxembourg\nLUXEMBOURG",
+    "tva_intra": "LU20260743"
+  },
+  "facture": {
+    "prefixe_numero": "FACT",
+    "format_numero": "{annee}-{mois:02d}-01",
+    "date_paiement_defaut": "[À compléter]",
+    "mode_reglement": "Virement bancaire"
+  },
+  "fichiers": {
+    "nom_fichier_excel_kdp": "KDP_Payments_[votre_fichier].xlsx",
+    "dossier_sortie": "./",
+    "format_nom_sortie": "Facture_KDP_{annee}-{mois:02d}.docx"
+  },
+  "messages": {
+    "autoliquidation": "Autoliquidation -- TVA due par le preneur, conformément à l'article 283-2 du CGI et à la directive 2006/112/CE. Facture émise hors taxes. Le client, assujetti établi dans un autre État membre de l'UE, est redevable de la TVA."
+  }
+}
