@@ -20,10 +20,10 @@ pip install pandas openpyxl python-docx fpdf2
 
 Téléchargez et sauvegardez dans un même dossier les fichiers suivants :
 
+**- `lancer_generateur_facture_kdp.bat` (pour Windows - lance l'interface graphique)**
 - `kdp_invoice_generator.py` (le script principal de génération)
 - `generateur_factures_kdp.py` (l'interface graphique)  
 - `config.json` (le fichier de configuration - utilisez le template fourni)
-- `lancer_generateur_facture_kdp.bat` (pour Windows - lance l'interface graphique)
 - `facture_simple.bat` (script batch alternatif pour ligne de commande)
 
 ### Étape 3 : Configuration personnalisée
