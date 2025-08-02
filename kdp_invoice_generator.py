@@ -40,13 +40,18 @@ def charger_configuration(chemin_config="config.json"):
         return None, f"ERREUR lors du chargement de la configuration: {e}"
 
 def setup_locale():
+    # Tenter de définir la locale sur le français.
+    # Les noms de locale peuvent varier légèrement selon le système d'exploitation.
+    # 'fr_FR.UTF-8' est courant sur Linux/macOS.
+    # 'fra_FRA.1252' ou 'French_France.1252' est courant sur Windows.
+    # On essaie plusieurs options.
     try:
         locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
     except locale.Error:
         try:
-            locale.setlocale(locale.LC_TIME, 'French_France.1252')
+            locale.setlocale(locale.LC_TIME, 'fra_FRA.1252') # Pour Windows
         except locale.Error:
-            pass
+            locale.setlocale(locale.LC_TIME, 'French_France.1252') # Autre pour Windows
 
 # ---------- LECTURE DES DONNÉES ----------------------------------------------
 def lire_fichier_kdp(chemin_fichier):
