@@ -4,7 +4,7 @@
 
 Avant d'installer le générateur, assurez-vous d'avoir :
 - Python 3.7 ou plus récent installé sur votre ordinateur (https://www.python.org/downloads/)
-- Un fichier Excel des paiements KDP d'Amazon (téléchargé depuis votre compte KDP https://kdpreports.amazon.com/payments)
+- Un fichier Excel des paiements KDP d'Amazon (téléchargé depuis votre compte KDP (https://kdpreports.amazon.com/payments)
 
 ## 🚀 Installation
 
