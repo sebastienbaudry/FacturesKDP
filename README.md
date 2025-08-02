@@ -151,13 +151,11 @@ Mon_Dossier_Factures_KDP/
 ├── config.json                       ← Votre configuration personnalisée
 ├── lancer_generateur_facture_kdp.bat ← Lanceur interface graphique (Windows)
 ├── facture_simple.bat                ← Script batch alternatif (Windows)
-├── KDP_Payments_juillet_2025.xlsx    ← Vos fichiers Excel KDP
-├── KDP_Payments_aout_2025.xlsx
 └── Factures_Generees/               ← Dossier des factures créées
-    ├── Facture_KDP_2025-07.docx
-    ├── Facture_KDP_2025-07.pdf
-    ├── Facture_KDP_2025-08.docx
-    └── Facture_KDP_2025-08.pdf
+    ├── Facture_KDP_2025-04.docx
+    ├── Facture_KDP_2025-04.pdf
+    ├── Facture_KDP_2025-05.docx
+    └── Facture_KDP_2025-05.pdf
 ```
 
 ## ⚙️ Configuration avancée
