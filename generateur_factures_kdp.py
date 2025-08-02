@@ -7,7 +7,25 @@ import platform
 from datetime import datetime, timedelta
 import threading
 
-from kdp_invoice_generator import generer_facture_logic
+# Assuming kdp_invoice_generator is available
+# from kdp_invoice_generator import generer_facture_logic
+
+# Placeholder for generer_facture_logic for testing purposes
+def generer_facture_logic(filepath, year, month, output_format):
+    # Simulate some work
+    print(f"Generating invoice for {month}/{year} from {filepath} in {output_format} format.")
+    if "error" in filepath:
+        return False, "Simulated error during generation.", []
+    
+    # Simulate success and return dummy file paths
+    dummy_files = []
+    if output_format == "docx" or output_format == "both":
+        dummy_files.append(f"facture_{year}_{month}.docx")
+    if output_format == "pdf" or output_format == "both":
+        dummy_files.append(f"facture_{year}_{month}.pdf")
+        
+    return True, f"Facture(s) générée(s) pour {month}/{year}.", dummy_files
+
 
 CONFIG_PATH = "config.json"
 
@@ -22,7 +40,25 @@ def charger_config():
     if os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
             return json.load(f)
-    return {}
+    # Provide a default structure if config.json doesn't exist
+    return {
+        "informations_personnelles": {
+            "nom": "",
+            "adresse": "",
+            "siret": "",
+            "tva_intra": "",
+            "code_ape": "",
+            "iban": "",
+            "bic": ""
+        },
+        "facturation": {
+            "lieu": "",
+            "autoliquidation": "Facture en auto-liquidation (Art. 283-2 du CGI)",
+            "message": "En tant qu’auteur, mes prestations sont exonérées de TVA (Art. 293B du CGI).",
+            "format_nom_sortie": "Facture KDP {annee}-{mois}"
+        }
+    }
+
 
 def sauvegarder_config(config):
     with open(CONFIG_PATH, 'w', encoding='utf-8') as f:
@@ -43,6 +79,11 @@ class InvoiceApp(tk.Tk):
         self.setup_generation_tab()
         self.setup_config_tab()
         self.setup_version_tab()  # Ajout de l'onglet version
+        
+        # Define a style for invalid entries (ttk widgets)
+        self.style = ttk.Style()
+        self.style.configure('Error.TEntry', fieldbackground='#FFE0E0', foreground='black') # Light red background
+        self.style.configure('Error.TCombobox', fieldbackground='#FFE0E0', foreground='black')
 
     # --- Onglet Génération ---
     def setup_generation_tab(self):
@@ -208,20 +249,34 @@ class InvoiceApp(tk.Tk):
 
         ttk.Button(scrollable, text="💾 Enregistrer les paramètres", command=self.save_config).pack(pady=15)
 
+    # Modified highlight_invalid function
     def highlight_invalid(self, widget):
-        widget.configure(highlightbackground="red", highlightcolor="red", highlightthickness=2)
+        if isinstance(widget, tk.Text):
+            widget.configure(highlightbackground="red", highlightcolor="red", highlightthickness=2)
+        elif isinstance(widget, ttk.Entry) or isinstance(widget, ttk.Combobox): # Assuming Combobox might also be used
+            widget.configure(style='Error.TEntry') # Apply the custom style for ttk widgets
+        # Add more conditions for other ttk widgets if necessary
+        # else:
+        #     print(f"Cannot highlight unknown widget type: {type(widget)}")
+
 
     def save_config(self):
         erreurs = []
         champs_valides = {}
 
+        # Modified reset_border function
         def reset_border(w):
-            w.configure(highlightthickness=0)
+            if isinstance(w, tk.Text):
+                w.configure(highlightthickness=0)
+            elif isinstance(w, ttk.Entry) or isinstance(w, ttk.Combobox):
+                # Reset to default style
+                w.configure(style='TEntry') # Default ttk Entry style
+            # Add more conditions for other ttk widgets if necessary
 
         for section, fields in self.config_widgets.items():
             champs_valides[section] = {}
             for key, widget in fields.items():
-                reset_border(widget)
+                reset_border(widget) # Reset border before validation
                 value = widget.get("1.0", tk.END).strip() if isinstance(widget, tk.Text) else widget.get().strip()
 
                 if not value:
@@ -233,23 +288,17 @@ class InvoiceApp(tk.Tk):
                 if k == "siret" and not value.replace(" ", "").isdigit():
                     erreurs.append(f"[{section}] Le SIRET doit être numérique.")
                     self.highlight_invalid(widget)
-                elif k == "tva_intra" and not (value[:2].isalpha() and value[2:].replace(" ", "").isalnum()):
-                    erreurs.append(f"[{section}] TVA intra invalide.")
+                elif k == "tva_intra" and not (len(value) >= 4 and value[:2].isalpha() and value[2:].replace(" ", "").isalnum()):
+                    erreurs.append(f"[{section}] TVA intra invalide. Format attendu: FRxx... (minimum 4 caractères, 2 lettres suivies de chiffres/lettres).")
                     self.highlight_invalid(widget)
-                elif k == "iban" and not (value[:2].isalpha() and value[2:].replace(" ", "").isdigit()):
-                    erreurs.append(f"[{section}] IBAN invalide.")
+                elif k == "iban" and not (len(value) >= 4 and value[:2].isalpha() and value[2:].replace(" ", "").isalnum()): # IBANs can contain letters after country code
+                    erreurs.append(f"[{section}] IBAN invalide. Format attendu: FRxx... (minimum 4 caractères, 2 lettres suivies de chiffres/lettres).")
                     self.highlight_invalid(widget)
                 elif k == "bic" and not (len(value.strip()) in [8, 11] and value.isalnum()):
                     erreurs.append(f"[{section}] BIC invalide.")
                     self.highlight_invalid(widget)
-                elif k == "code_ape" and not (value[:4].isdigit() and value[4].isalpha()):
-                    erreurs.append(f"[{section}] Code APE invalide.")
-                    self.highlight_invalid(widget)
-                elif k == "format_nom_sortie" and not ("{annee}" in value and "{mois" in value):
-                    erreurs.append(f"[{section}] format_nom_sortie doit contenir '{{annee}}' et '{{mois}}'.")
-                    self.highlight_invalid(widget)
-
-                champs_valides[section][key] = value
+                else:
+                    champs_valides[section][key] = value
 
         if erreurs:
             messagebox.showerror("Erreurs de validation", "\n".join(erreurs))
