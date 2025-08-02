@@ -270,6 +270,12 @@ Ce générateur a été développé par **Sébastien Baudry**, avec l'assistance
 - **Gemini Pro 2.5** (Google DeepMind)
 - **ChatGPT-4o** (OpenAI)
 
+## Soutenir le Projet
+
+Si ce logiciel vous est utile et que vous souhaitez soutenir son développement, vous pouvez faire un don via LibrePay :
+[Soutenir sur LibrePay](https://liberapay.com/sebastienbaudry/)
+Votre soutien est précieux et nous aide à continuer d'améliorer ce projet.
+
 ### 📝 Licence
 
 Ce générateur est distribué sous licence **MIT** :
