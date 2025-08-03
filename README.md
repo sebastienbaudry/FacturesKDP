@@ -1,4 +1,4 @@
-# Générateur de Factures KDP - Guide d'Installation et d'Utilisation v3.2
+# Générateur de Factures pour auteurs KDP Kindle Direct Publishing - Guide d'Installation et d'Utilisation v3.2
 
 ## 📋 Prérequis
 
